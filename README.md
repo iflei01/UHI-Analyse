@@ -1,5 +1,5 @@
 # UHI-Analyse Oktoberfest München
-Dieses Repository enthält den Code zur Analyse des Urban Heat Island (UHI) Effekts auf der Theresienwiese in München während des Oktoberfestes, erstellt im Rahmen einer Bachelorarbeit unter Verwendung von Landsat 9 und Sentinel-2 Satellitendaten sowie Google Earth Engine
+Dieses Repository enthält den Code zur Analyse des Urban Heat Island (UHI) Effekts auf der Theresienwiese in München während des Oktoberfestes, erstellt im Rahmen meiner Bachelorarbeit unter Verwendung von Landsat 9 und Sentinel-2 Satellitendaten sowie Google Earth Engine
 
 ## Inhalt
 - **uhi_theresienwiese.js**  
