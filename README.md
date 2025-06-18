@@ -5,9 +5,9 @@ Dieses Repository enthält den Code zur Analyse des Urban Heat Island (UHI) Effe
 - **uhi_theresienwiese.js**  
   Hauptskript zur Berechnung und Visualisierung der UHI-Analyse auf der Theresienwiese. Es umfasst:
   - Nutzung von Landsat 9 und Sentinel-2 Daten
-  - Zonenauswahl mithilfe von NDVI und Random Forest Landnutzungsklassifikation
+  - Zonenauswahl mithilfe von NDVI und Random-Forest Landnutzungsklassifikation
   - Extraktion und Vergleich von Landoberflächentemperaturen (LST) für verschiedene Zeiträume (vor, während und nach dem Oktoberfest) mit Landsat 9
-  - Berechnung von NDVI, NDBI, NDWI und Albedo mit Sentinel-2 für Downscaling der LST mittels Random Forest  
+  - Berechnung von NDVI, NDBI, NDWI und Albedo mit Sentinel-2 für Downscaling der LST mittels Random-Forest  
   - Normierung der LST-Daten sowie Erstellung von Differenzbildern
 
 - **true_color.js**  
@@ -16,7 +16,7 @@ Dieses Repository enthält den Code zur Analyse des Urban Heat Island (UHI) Effe
 - **imports.js**  
   In dieser Datei sind alle für die Analyse benötigten Geometrien (z.B. Theresienwiese, Innenstadt, Forst, Schlosspark, Isar) aufgelistet.  
   Die Datei ist aufgrund der Vielzahl und Länge der Geometrie-Definitionen ausgelagert, um die Übersichtlichkeit des Hauptcodes zu gewährleisten.  
-  In Google Earth Engine (GEE) ist diese Geometrien direkt als "import" eingebunden.  
+  In Google Earth Engine (GEE) sind diese Geometrien direkt als "import" eingebunden.  
   **Wichtig:** Ohne die Datei `imports.js` funktioniert das Hauptskript nicht, da alle räumlichen Bezüge und Auswertungsgebiete dort definiert sind.
 
 ## Nutzung
