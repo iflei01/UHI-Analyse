@@ -9,11 +9,9 @@ var periods = [
   {start: '2024-03-01', end: '2024-04-30'}
 ];
 
-//////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
-
-// Berechnung der LST mit dem Split-Window Algorithmus 
+///////////////////////////////////////////////////////
+//Berechnung der LST mit dem Split-Window Algorithmus//
+///////////////////////////////////////////////////////
 
 // Funktion zur LST-Berechnung für ein einzelnes Bild
 function calculateLST(image) {
@@ -35,6 +33,7 @@ function calculateLST(image) {
   var K2_10 = ee.Number(image.get('K2_CONSTANT_BAND_10'));
   var K1_11 = ee.Number(image.get('K1_CONSTANT_BAND_11'));
   var K2_11 = ee.Number(image.get('K2_CONSTANT_BAND_11'));
+  
   // Brightness Temperature berechnen
   // Band 10
   var TB10 = L10.expression(
@@ -48,6 +47,7 @@ function calculateLST(image) {
     'K1': K1_11, 'K2': K2_11, 'L': L11
   });
   
+  //Hilfsausgaben, um Daten zu prüfen
   //print('RADIANCE_MULT_BAND_10:', ML10);
   //print('RADIANCE_ADD_BAND_10:', AL10);
   //print('RADIANCE_MULT_BAND_11:', ML11);
@@ -140,6 +140,7 @@ Map.addLayer(lstResults[2], lstVis, 'LST Period 3', false);
 //////////////
 //Normierung//
 //////////////
+
 // Funktion zur Normierung der LST-Daten
 function normalizeLST(image) {
   var mean = image.reduceRegion({
@@ -198,9 +199,10 @@ var diffVis = {
 Map.addLayer(diff12, diffVis, 'Differenz Zeitraum 2 - Zeitraum 1', false);
 // Differenz Zeitraum 2 - Zeitraum 3 = wie hat sich die LST während des Oktoberfest im Vergleich zu nachher verhalten?
 Map.addLayer(diff23, diffVis, 'Differenz Zeitraum 2 - Zeitraum 3', false);
-//////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////
+//Albedo, NDVI, NDWI, NDBI//
+////////////////////////////
 
 // Funktion zur Berechnung der Albedo nach Naegeli et. al (modifiziert für Sentinel-2)
 function calculateAlbedo(image) {
@@ -334,9 +336,10 @@ for (var i = 0; i < sentinel2NDVI_NDBI_reprojected.length; i++) {
 // Nur NDBI für den zweiten Zeitraum anzeigen
 //Map.addLayer(sentinel2NDVI_NDBI_reprojected[1].select('NDBI'), ndbiVis, 'Sentinel-2 NDBI - Zeitraum 2', false);
 
-////////////////////////
-//Random-Forest/////////
-////////////////////////
+////////////////////////////////////////////
+//Random-Forest Landnutzungsklassifikation//
+////////////////////////////////////////////
+
 // Sentinel-2 Bild skalieren
 
 var scaledSentinel = scaleSentinel2(sentinel2Collections[0].first());
@@ -375,6 +378,7 @@ var classifier = ee.Classifier.smileRandomForest(200).train({
 // Klassifikation auf das Bild anwenden
 var classified = trainingImage.classify(classifier);
 
+// Validierung des Random-Forest Algorithmus
 // Konfusionsmatrix für Trainingsdaten (Resubstitution)
 var trainConfMatrix = classifier.confusionMatrix();
 print('Trainings-Konfusionsmatrix:', trainConfMatrix);
@@ -402,14 +406,14 @@ var classVis = {
 Map.addLayer(classified, classVis, 'Land Cover Classification', false);
 
 
-/////////////////////////
-/// Downscaling mit RF //
-/////////////////////////
+///////////////////////
+///Downscaling mit RF//
+///////////////////////
 
-// 1. Funktion, um ein Bild auf eine bestimmte Projektion und Auflösung umzurechnen
+// 1. Funktion, um ein Bild auf eine einheitliche Projektion und Auflösung umzurechnen
 function reprojectLSTImage(image) {
   var crs = 'EPSG:32632'; // Zielprojektion
-  var transform = [10, 0, 600000, 0, -10, 5400000]; // Konsistente Transformation
+  var transform = [10, 0, 600000, 0, -10, 5400000]; 
   return image.reproject({
     crs: crs,
     crsTransform: transform
@@ -511,6 +515,7 @@ for (var i = 0; i < originalLSTStats.length; i++) {
 ///////////////////////////////////////////////
 //Normierung der herunterskalierten LST Daten//
 ///////////////////////////////////////////////
+
 // Funktion zur Normierung der LST-Daten
 function normalizeskalLST(image) {
   var mean = image.reduceRegion({
@@ -542,6 +547,7 @@ var normalizedLSTskals = downscaledLSTResults.map(function(lstImage) {
 
 // Ergebnisse ausgeben
 //print('Normierte LST-Daten:', normalizedLSTs);
+
 // Normierte LST-Bilder auf der Karte anzeigen
 Map.addLayer(normalizedLSTskals[0], normLSTVis, 'Normierteskal LST - Zeitraum 1', false);
 Map.addLayer(normalizedLSTskals[1], normLSTVis, 'Normierteskal LST - Zeitraum 2', false);
@@ -558,8 +564,9 @@ Map.addLayer(diffskal12, diffVis, 'Differenz skal Zeitraum 2 - Zeitraum 1', fals
 // Differenz Zeitraum 2 - Zeitraum 3 = wie hat sich die LST während des Oktoberfest im Vergleich zu nachher verhalten?
 Map.addLayer(diffskal23, diffVis, 'Differenz skal Zeitraum 2 - Zeitraum 3', false);
 
-////////////////////////
-////////////////////////
+/////////////////////////
+//Mittelwerte berechnen//
+/////////////////////////
 
 // Im Folgenden werden Mittelwerte der LST und normierten LST für die festgelegten Polygone für alle 3 Zeiträume berechnet
 // Definiere eine Liste von Geometrien
@@ -602,7 +609,7 @@ function calculateNormalizedLSTMean(image, geometry) {
   return mean;
 }
 
-// Funktion zur Berechung des Mittelwerts der skalierten LST für eine Liste von Geometrien
+// Funktion zur Berechung des Mittelwerts der herunterskalierten LST für eine Liste von Geometrien
 function calculateLSTskalMean(image, geometry) {
   var mean = image.reduceRegion({
     reducer: ee.Reducer.mean(),
@@ -613,7 +620,7 @@ function calculateLSTskalMean(image, geometry) {
   return mean;
 }
 
-// Funktion zur Berechnung des Mittelwerts der skalierten normierten LST für eine Liste von Geometrien
+// Funktion zur Berechnung des Mittelwerts der herunterskalierten normierten LST für eine Liste von Geometrien
 function calculateNormalizedLSTskalMean(image, geometry) {
   var mean = image.reduceRegion({
     reducer: ee.Reducer.mean(),
@@ -640,7 +647,7 @@ var normalizedLSTMeans = geometries.map(function(geometry, index) {
   return {name: geometryNames[index], means: means};
 });
 
-// Mittelwerte der normierten LST für alle drei Zeiträume und alle Geometrien berechnen
+// Mittelwerte der normierten, herunterskalierten LST für alle drei Zeiträume und alle Geometrien berechnen
 var normalizedLSTskalMeans = geometries.map(function(geometry, index) {
   var means = normalizedLSTskals.map(function(image) {
     return calculateNormalizedLSTskalMean(image, geometry);
@@ -648,13 +655,14 @@ var normalizedLSTskalMeans = geometries.map(function(geometry, index) {
   return {name: geometryNames[index], means: means};
 });
 
-// LST-Mittelwerte für alle drei Zeiträume und alle Geometrien berechnen
+// herunterskalierte LST-Mittelwerte für alle drei Zeiträume und alle Geometrien berechnen
 var lstskalMeans = geometries.map(function(geometry, index) {
   var means = downscaledLSTResults.map(function(image) {
     return calculateLSTskalMean(image, geometry);
   });
   return {name: geometryNames[index], means: means};
 });
+
 // Ergebnisse ausgeben
 
 print('LST-Mittelwerte für alle Geometrien und Zeiträume:');
@@ -735,10 +743,10 @@ diffskalMeans.forEach(function(result) {
   print('  Zeitraum 2 - Zeitraum 3: ' + result.means[1].getInfo());
 });
 
-
 ///////////////////////////////////
 //NDVI-Statistiken für alle Zonen//
 ///////////////////////////////////
+
 // 1. Kombinierte Reducer-Funktion
 function calculateNDVIStats(image, geometry) {
   var stats = image.select('NDVI').reduceRegion({
@@ -784,6 +792,7 @@ ndviResults.forEach(function(zoneResult) {
 /////////////////////////
 //Cloud Cover Landsat 9//
 /////////////////////////
+
 // Im Folgenden wird die Cloud Cover für die Landsat 9 Bilder berechnet, um eine Aussage über die Qualität zu geben
 // Funktion zur Abrufung der Cloud Cover eines einzelnen Landsat-Bildes
 function getCloudCover(period) {
@@ -838,6 +847,7 @@ Map.addLayer(stadtgrenze, {color: 'black', width:2, fillColor: 'transparent'}, '
 ///////////////////////////////////////////////////////
 //Hilfsfunktion um Werte auf Karte anzeigen zu lassen//
 ///////////////////////////////////////////////////////
+
 function createGeoJSONPoint(point) {
   return ee.Geometry.Point([point.lon, point.lat]);
 }
@@ -883,6 +893,9 @@ Map.onClick(function(point) {
   }
 });
 
+////////////////////////////////////////////
+//Hilfsüberprüfung notwendige Projektionen//
+////////////////////////////////////////////
 /*
 // Funktion, um die Projektion eines Bildes anzuzeigen
 function displayProjection(image) {
@@ -904,7 +917,7 @@ sentinel2NDVI_NDBI_reprojected.forEach(function(sentinelImage, index) {
 // Sentinel-2-Bild für den ersten Zeitraum laden
 var sentinelImage = sentinel2NDVI_NDBI_reprojected[0];
 
-// Einzelnes Band auswählen (z.B. NDVI)
+// Einzelnes Band auswählen (NDVI)
 var ndviBand = sentinelImage.select('NDVI');
 
 // Projektion des ausgewählten Bands überprüfen
@@ -914,7 +927,7 @@ print('Projektion des NDVI-Bands:', projection);
 // Sentinel-2-Bild für den ersten Zeitraum laden
 var sentinelImage = sentinel2NDVI_NDBI_reprojected[0];
 
-// Einzelnes Band auswählen (z.B. NDBI)
+// Einzelnes Band auswählen (NDBI)
 var ndbiBand = sentinelImage.select('NDBI');
 
 // Projektion des ausgewählten Bands überprüfen
@@ -924,7 +937,7 @@ print('Projektion des NDBI-Bands:', projection);
 // Sentinel-2-Bild für den ersten Zeitraum laden
 var sentinelImage = sentinel2NDVI_NDBI_reprojected[0];
 
-// Einzelnes Band auswählen (z.B. NDBI)
+// Einzelnes Band auswählen (NDBI)
 var ndwiBand = sentinelImage.select('NDWI');
 
 // Projektion des ausgewählten Bands überprüfen
@@ -935,6 +948,7 @@ print('Projektion des NDWI-Bands:', projection);
 ////////////////////////////////////////////////////
 //Validierung des Downscalings durch Scatter Plots//
 ////////////////////////////////////////////////////
+
 // Funktion zum Sammeln von Pixelwerten aus beiden Bildern
 function collectPixelValues(originalLST, downscaledLST, region) {
   // Kombinieren Sie beide Bilder
@@ -953,14 +967,13 @@ function collectPixelValues(originalLST, downscaledLST, region) {
 
 // Für jeden Zeitraum einen Scatter Plot erstellen
 for (var i = 0; i < lstResults.length; i++) {
-  // Stellen Sie sicher, dass die Bänder korrekt benannt sind
   var originalLST = lstResults[i];
   var downscaledLST = downscaledLSTResults[i].rename('classification');
   
-  // Sammeln Sie die Pixelwerte
+  // Sammeln von Pixelwerte
   var samples = collectPixelValues(originalLST, downscaledLST, geometrymunich);
   
-  // Erstellen Sie den Scatter Plot
+  // Erstellen von den Scatter Plots
   var chart = ui.Chart.feature.byFeature(samples, 'constant', ['classification'])
     .setChartType('ScatterChart')
     .setOptions({
@@ -974,7 +987,7 @@ for (var i = 0; i < lstResults.length; i++) {
   
   print(chart);
   
-  // Berechnen Sie Statistiken zur Validierung
+  // Berechnen Statistik zur Validierung
   var stats = samples.reduceColumns({
     reducer: ee.Reducer.pearsonsCorrelation(),
     selectors: ['constant', 'classification']
@@ -1001,8 +1014,4 @@ var rmse = ee.Number(
 ).sqrt();
 
 print('RMSE für Zeitraum ' + (i + 1) + ':', rmse);
-
-
-
 }
-
