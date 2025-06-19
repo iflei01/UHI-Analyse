@@ -21,7 +21,6 @@ var geometrytheresienwiese =
           [11.552059122675654, 48.1351981389108],
           [11.550857493036983, 48.13582822902889],
           [11.54965586339831, 48.136114631071905]]]),
-    stadtgrenze = ee.FeatureCollection("projects/bainka/assets/stadtgrenze_munich"),
     forest = 
     /* color: #008c00 */
     /* shown: false */
