@@ -7,7 +7,7 @@ Dieses Repository enthält den Code zur Analyse des Urban Heat Island (UHI) Effe
   - Nutzung von Landsat 9 und Sentinel-2 Daten
   - Zonenauswahl mithilfe von NDVI und Random-Forest Landnutzungsklassifikation
   - Extraktion und Vergleich von Landoberflächentemperaturen (LST) für verschiedene Zeiträume (vor, während und nach dem Oktoberfest) mit Landsat 9
-  - Berechnung von NDVI, NDBI, NDWI und Albedo mit Sentinel-2 für Downscaling der LST mittels Random-Forest  
+  - Berechnung von NDVI, NDBI, NDWI und Albedo mit Sentinel-2 für Downscaling der Landsat 9 LST mittels Random-Forest  
   - Normierung der LST-Daten sowie Erstellung von Differenzbildern
 
 - **true_color.js**  
@@ -29,14 +29,15 @@ Dieses Repository enthält den Code zur Analyse des Urban Heat Island (UHI) Effe
    - 👉 [True Color in Earth Engine öffnen](https://code.earthengine.google.com/affe4e1b2085bdc0eb85caf08121b183))
 
 2. **Skripte verwenden**  
-   - Die Datei `uhi_theresienwiese.js` kann direkt im Google Earth Engine Code Editor ausgeführt werden.  
+   - Die Datei `uhi_theresienwiese.js` kann direkt im Google Earth Engine Code Editor ausgeführt (Run) werden.  
    - Die Datei `true_color.js` dient zur Vorabprüfung der Bildqualität und wurde vor der Hauptanalyse verwendet.  
-   - Die Datei `imports.js` muss ebenfalls importiert werden, damit alle Geometrien zur Verfügung stehen. In GEE bereits enthalten.
+   - Die Datei `imports.js` Ist in GEE bereits enthalten.
 
 3. **Ablauf in Google Earth Engine**
    - **Google-Konto** und **freigeschalteter Zugang** zu Google Earth Engine als Voraussetzung.
    Mit einem Klick auf **Run** werden alle notwendigen Analysen automatisch durchgeführt.  
    Über die **Layer-Ansicht** können die einzelnen relevanten Layer (z.B. LST, NDVI, Klassifikationsergebnisse) angezeigt und verglichen werden.
+  In der **Konsole** werden die Ergebnisse der Berechnungen, Validierungen und Scatter Plots ausgegeben.
 
 
 
