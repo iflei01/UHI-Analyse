@@ -842,8 +842,6 @@ var isar = ee.FeatureCollection([ee.Feature(geometryIsar)]);
 var outline = isar.style({color: 'black', width: 3, fillColor: '00000000'});
 Map.addLayer(outline, {}, 'Isar');
 
-Map.addLayer(stadtgrenze, {color: 'black', width:2, fillColor: 'transparent'}, 'Stadtgrenze', false);
-
 ///////////////////////////////////////////////////////
 //Hilfsfunktion um Werte auf Karte anzeigen zu lassen//
 ///////////////////////////////////////////////////////
