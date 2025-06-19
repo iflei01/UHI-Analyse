@@ -26,7 +26,7 @@ Dieses Repository enthält den Code zur Analyse des Urban Heat Island (UHI) Effe
 
    - [Google Earth Engine Code Editor](https://code.earthengine.google.com/)
    - 👉 [UHI-Analyse in Earth Engine öffnen](https://code.earthengine.google.com/21dd8c0476c15c8dea45d8bbd1c600ce)
-   - 👉 [True Color in Earth Engine öffnen](https://code.earthengine.google.com/affe4e1b2085bdc0eb85caf08121b183))
+   - 👉 [True Color in Earth Engine öffnen](https://code.earthengine.google.com/affe4e1b2085bdc0eb85caf08121b183)
 
 2. **Skripte verwenden**  
    - Die Datei `uhi_theresienwiese.js` kann direkt im Google Earth Engine Code Editor ausgeführt (Run) werden.  
