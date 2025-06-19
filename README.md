@@ -25,7 +25,7 @@ Dieses Repository enthält den Code zur Analyse des Urban Heat Island (UHI) Effe
    Um die Skripte auszuführen, wird ein Google-Konto sowie Zugang zur Google Earth Engine benötigt. Die Registrierung ist kostenlos, aber eine Freischaltung durch Google ist erforderlich.
 
    - [Google Earth Engine Code Editor](https://code.earthengine.google.com/)
-   - 👉 [UHI-Analyse in Earth Engine öffnen](https://code.earthengine.google.com/21dd8c0476c15c8dea45d8bbd1c600ce)
+   - 👉 [UHI-Analyse in Earth Engine öffnen](https://code.earthengine.google.com/490373623ef03e0b3f206ca94a01b65f)
    - 👉 [True Color in Earth Engine öffnen](https://code.earthengine.google.com/affe4e1b2085bdc0eb85caf08121b183)
 
 2. **Skripte verwenden**  
@@ -39,5 +39,7 @@ Dieses Repository enthält den Code zur Analyse des Urban Heat Island (UHI) Effe
    Über die **Layer-Ansicht** können die einzelnen relevanten Layer (z.B. LST, NDVI, Klassifikationsergebnisse) angezeigt und verglichen werden.
   In der **Konsole** werden die Ergebnisse der Berechnungen, Validierungen und Scatter Plots ausgegeben.
 
-
-
+4. **Hinweis**
+   - Abhängig von der Auslastung der Google Earth Engine und aufgrund der Komplexität und Größe der Berechnungen kann es vorkommen, dass nicht alle Operationen ausgeführt werden.
+     Dann erscheint in der Konsole der Hinweis: `The Operation timed out.`
+     In diesem Fall sollte das Skript erneut ausgeführt werden.
